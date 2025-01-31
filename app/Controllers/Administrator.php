@@ -1,0 +1,140 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\Users;
+use App\Models\UserProfile;
+use App\Helpers\Helpers;
+use App\Helpers\Alerts;
+
+
+class Administrator
+{
+    private $_users;
+    private $_user_profile;
+
+    private $_helper;
+    private $_alerts;
+
+    function __construct()
+    {
+        $this->_users = new Users();
+        $this->_user_profile = new UserProfile();
+        $this->_helper = new Helpers();
+        $this->_alerts = new Alerts();
+    }
+
+    public function AddCollaborator()
+    {
+        $alert = ['title' => '', 'body' => '', 'type' => '', 'location' => ''];
+
+        if (isset($_POST['user_departament'])) {
+
+            $response = $this->_helper->validatePost(["user_departament", "user_rol", "username", "password", "names", "last_names", "gener", "shift"]);
+
+            if ($response['valid']) {
+
+                $password       = password_hash($_POST['password'], PASSWORD_ARGON2I);
+                $user_values    = [$_POST['username'], $password, $_POST['user_departament'], $_POST['user_rol'], 'ACTIVE'];
+                $user_id        = $this->_users->Add($user_values);
+
+                if (is_int((int)$user_id)) {
+                    $profile_values = [$_POST['names'], $_POST['last_names'], $_POST['gener'], $_POST["shift"], $user_id];
+                    $profile = $this->_user_profile->Add($profile_values);
+                    if (is_int((int)$profile)) {
+                        if ($profile == true) {
+                            $alert['title']     = 'Alta exitosa';
+                            $alert['body']      = 'El registro del colaborador fue correcto';
+                            $alert['type']      = 'success';
+                        } else {
+                            $alert['title']     = 'Error en el registro';
+                            $alert['body']      = 'No se logro registrar el colaborador correctamente';
+                            $alert['type']      = 'error';
+                            $alert['location']  = '';
+                        }
+                    } else {
+                        $alert['title']     = 'Error en el registro';
+                        $alert['body']      = 'No se logro registrar el colaborador correctamente';
+                        $alert['type']      = 'error';
+                        $alert['location']  = '';
+                    }
+                } else {
+                    $alert['title']     = 'Error en el registro';
+                    $alert['body']      = 'No se logro registrar el colaborador correctamente';
+                    $alert['type']      = 'error';
+                    $alert['location']  = '';
+                }
+            } else {
+
+                $body = "";
+                foreach ($response['missing'] as $key => $missing) {
+                    switch($missing) {
+                        case 'username': $missing = 'Username';break;
+                        case 'password': $missing = 'Contraseña'; break;
+                        case 'names': $missing = 'Nombre'; break;
+                        case 'last_names':$missing = 'Apellidos'; break;
+                        case 'gener': $missing = 'Genero'; break;
+                        case 'user_rol': $missing = 'Puesto';break;
+                        case 'shift': $missing = 'Turno'; break;
+                    }
+                    $body .= $missing . ', ';
+                }
+
+                $alert['title']     = 'Faltan campos por llenar en el formulario';
+                $alert['body']      = $body;
+                $alert['type']      = 'warning';
+                $alert['location']  = '';
+
+                
+            }
+            $this->_alerts->showAlert($alert);
+        }
+    }
+
+    Public function DepartamentUsers($role_id, $departament_id){
+        $table  = '';
+        $users  = $this->_users->GetUsersByDepartament($role_id, $departament_id);
+        foreach ($users as $user) {
+            $gener       = $user['gener'] == 'MAN' ? 'Hombre' : 'Mujer';
+            $shift       = $user['shift'] == 'MORNING' ? 'Mañana' : 'Tarde';
+            $status       = '';
+            $status_class = ''; 
+
+            switch ($user['status']) {
+                case 'ACTIVE':   $status = "Activo";        $status_class = "success"; break;
+                case 'INACTIVE': $status = "Suspendido";    $status_class = "warning"; break;
+                case 'DELETED':  $status = "Eliminado";     $status_class = "danger";  break;
+            }
+
+            $table .= '
+                 <tr>
+                    <td class="text-bold-500">'.$user['name'].'</td>
+                    <td>'.$user['last_name'].'</td>
+                    <td class="text-bold-500">'.$gener.'</td>
+                    <td>'.$shift.'</td>
+                    <td><span class="badge bg-'.$status_class.'">'.$status.'</span></td>
+                    <td>
+                        <div class="btn-group mb-2 btn-group-sm" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Update-Collaborator"><i data-feather="edit-2"></i></button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Add-collaborator"><i data-feather="trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            ';
+        }
+        return $table;
+    }
+
+    public function UpdateCollaborator (){
+
+    }  
+
+    public function GetUser( $id ) {
+        
+        $user = $this->_users->UserById( $id );
+        if ( !empty( $user ) ) {
+            return $user[0];
+        }
+        return null;
+    }
+}
