@@ -11,7 +11,7 @@ class Users extends Database
 
     public function GetUsersByDepartament( $role_id, $departament_id ){
         $values = [$role_id, $departament_id];
-        $request = $this->ConsultaPreparada("SELECT user_profiles.names AS name, user_profiles.last_names AS last_name, user_profiles.gener AS gener, departaments.names AS 
+        $request = $this->ConsultaPreparada("SELECT users.id, user_profiles.names AS name, user_profiles.last_names AS last_name, user_profiles.gener AS gener, departaments.names AS 
         departament, user_profiles.shift AS shift, 
         roles.names AS rNames , users.status AS status, users.created AS created 
         FROM users 
@@ -22,8 +22,12 @@ class Users extends Database
         return $request;
     }
 
-    public function UserById($id) {
-        $values = $this->ConsultaPreparada("SELECT * FROM users WHERE id = ?", [$id]);
+    public function UserProfileById($id) {
+        $values = $this->ConsultaPreparada("SELECT users.username, users.password,users.role_id,user_profiles.names, user_profiles.last_names, 
+        user_profiles.gener, user_profiles.shift
+        FROM users 
+        INNER JOIN user_profiles ON users.id = user_profiles.user_id 
+        WHERE users.id = ?", [$id]);
         return $values;
     }
     

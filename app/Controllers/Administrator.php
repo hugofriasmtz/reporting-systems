@@ -91,7 +91,7 @@ class Administrator
         }
     }
 
-    Public function DepartamentUsers($role_id, $departament_id){
+    Public function TableUsersByDepartament($role_id, $departament_id){
         $table  = '';
         $users  = $this->_users->GetUsersByDepartament($role_id, $departament_id);
         foreach ($users as $user) {
@@ -115,8 +115,8 @@ class Administrator
                     <td><span class="badge bg-'.$status_class.'">'.$status.'</span></td>
                     <td>
                         <div class="btn-group mb-2 btn-group-sm" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Update-Collaborator"><i data-feather="edit-2"></i></button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Add-collaborator"><i data-feather="trash"></i></button>
+                            <button type="button" class="btn btn-warning" data-id="'.$user['id'].'" data-bs-toggle="modal" data-bs-target="#updateCollaborator"><i data-feather="edit-2"></i></button>
+                            <button type="button" class="btn btn-danger" data-id="'.$user['id'].'" data-bs-toggle="modal" data-bs-target="#Add-collaborator"><i data-feather="trash"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -129,9 +129,12 @@ class Administrator
 
     }  
 
+    public function DeleteCollaborator (){
+
+    }
     public function GetUser( $id ) {
         
-        $user = $this->_users->UserById( $id );
+        $user = $this->_users->UserProfileById( $id );
         if ( !empty( $user ) ) {
             return $user[0];
         }

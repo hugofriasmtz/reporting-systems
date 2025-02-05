@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . '../../../../autoload.php';
 
+use App\Controllers\Authentication;
 use App\Controllers\Administrator;
+
+$controller = new Authentication();
 $controller = new Administrator();
 
 
@@ -23,6 +26,14 @@ if (isset($_POST['user_id'])) {
         $shift .= '<option value="NIGHT" selected> Noche </option>';
     }
 
+    if ($user["role_id"] === '2') {
+        $role .= '<option value="2" selected> Encargado </option>';
+        $role .= '<option value="3"> Colaborador </option>';
+    } else {
+        $role .= '<option value="2"> Encargado </option>';
+        $role .= '<option value="3" selected> Colaborador </option>';
+    }
+
     if ($user["gener"] === 'MAN') {
         $genero .= '<option value="MAN" selected> Hombre </option>';
         $genero .= '<option value="WOMAN"> Mujer </option>';
@@ -30,6 +41,7 @@ if (isset($_POST['user_id'])) {
         $genero .= '<option value="MAN" > Hombre </option>';
         $genero .= '<option value="WOMAN" selected> Mujer </option>';
     }
+
     if (!is_null($user)) {
         $payload = '  
        <form method="POST" class="form">
@@ -40,25 +52,25 @@ if (isset($_POST['user_id'])) {
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="names">Nombre</label>
-                                <input type="text" id="names" class="form-control" name="'.$user['names'].'">
+                                <input type="text" id="names" class="form-control" name="names" value="'.$user['names'].'">
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="last_name">Apellidos</label>
-                                <input type="text" id="last_names" class="form-control" name="'.$user['last_names'].'">
+                                <input type="text" id="last_names" class="form-control" name="last_names" value="'.$user['last_names'].'">
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" id="username" class=" form-control" name="'.$user['username'].'">
+                                <input type="text" id="username" class=" form-control" name="username" value="'.$user['username'].'">
                             </div>
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="password">Contraseña</label>
-                                <input type="password" id="password" class="form-control" name="'.$user['password'].'">
+                                <input type="password" id="password" class="form-control" name="password" value="'.$user['password'].'">
                             </div>
                         </div>
                         <div class="col-md-4 col-12">
@@ -79,8 +91,7 @@ if (isset($_POST['user_id'])) {
                                 <div class="input-group mb-3">
                                     <select class="form-select" name="user_rol" id="inputGroupSelect01">
                                         <option selected>Seleccionar...</option>
-                                        <option value="2">Encargado</option>
-                                        <option value="3">Colaborador</option>
+                                        '.$role.'
                                     </select>
                                     <label class="input-group-text" for="inputGroupSelect01">Cargos</label>
                                 </div>
@@ -100,7 +111,7 @@ if (isset($_POST['user_id'])) {
                     </div>
                     <hr>
                     <div class="col-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success me-1 mb-1">Registrar</button>
+                        <button type="submit" class="btn btn-success me-1 mb-1">Actualizar</button>
                     </div>
                 </form> ';
 

@@ -8,15 +8,15 @@ use App\Controllers\Structure;
 $auth      = new Authentication();
 $admin     = new Administrator();
 $structure = new Structure();
-$user               = $auth->AuthUser();
+$user      = $auth->AuthUser();
+$admin-> UpdateCollaborator();
+$admin->DeleteCollaborator();
 
 if (!$auth->IsAuth()) {
     header('location:../Home/auth-login.php');
 }
 
 $authn_user   = $_SESSION['user'];
-
-$admin->AddCollaborator();
 
 ?>
 <!DOCTYPE html>
@@ -32,7 +32,7 @@ $admin->AddCollaborator();
     <link rel="stylesheet" href="../../../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="../../../assets/css/app.css">
     <link rel="shortcut icon" href="../../../assets/images/favicon.svg" type="image/x-icon">
-    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -87,7 +87,7 @@ $admin->AddCollaborator();
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php echo $admin->DepartamentUsers(3, 2); ?>
+                                                <?php echo $admin->TableUsersByDepartament(3, 2); ?>
                                                 <?php include_once '../Modals/update_user_collaborator.php' ?>
                                             </tbody>
                                         </table>
@@ -98,11 +98,11 @@ $admin->AddCollaborator();
                     </div>
                     <!-- Hoverable rows end -->
                     <!-- Modal Edit -->
-                    <div class="modal fade text-left" id="Update-Collaborator" tabindex="-1" role="dialog" aria-labelledby="updateUserLabel" aria-hidden="true">
+                    <div class="modal fade text-left" id="updateCollaborator" tabindex="-1" role="dialog" aria-labelledby="updateCollaboratorLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-warning">
-                                    <h5 class="modal-title white" id="updateUserLabel">Actualizar Colaborador</h5>
+                                    <h5 class="modal-title white" id="updateCollaboratorLabel">Actualizar Colaborador</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <i data-feather="x"></i>
                                     </button>
@@ -124,7 +124,7 @@ $admin->AddCollaborator();
     <script src="../../../assets/js/main.js"></script>
 
     <script type="text/javascript">
-        $(document).on("click", ".Update-Collaborator", function() {
+        $(document).on("click", ".updateCollaborator", function() {
             var user_id = $(this).data('id');
             $.ajax({
                 url: '../Modals/update_user_collaborator.php',
@@ -134,7 +134,7 @@ $admin->AddCollaborator();
                 },
                 success: function(data) {
                     $("#update_user").html(data);
-                    $('#Update-Collaborator').modal('show');
+                    $('#updateCollaborator').modal('show');
                 }
             })
 
