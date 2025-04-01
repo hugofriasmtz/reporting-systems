@@ -26,6 +26,12 @@ El objetivo de este sistema es mejorar la experiencia al proporcionar una manera
 - PHP
 - MariaDB
 
+## Funcionamiento
+
+Equipo de desarrollo
+
+- Hugo Frias
+
 ## Licencia
 
 Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
