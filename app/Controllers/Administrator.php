@@ -6,15 +6,17 @@ use App\Models\Users;
 use App\Models\UserProfile;
 use App\Helpers\Helpers;
 use App\Helpers\Alerts;
+use App\Helpers\UserAttributes;
+use \DateTime;
 
 
 class Administrator
 {
     private $_users;
     private $_user_profile;
-
     private $_helper;
     private $_alerts;
+    private $_dataTime;
 
     function __construct()
     {
@@ -22,6 +24,69 @@ class Administrator
         $this->_user_profile = new UserProfile();
         $this->_helper = new Helpers();
         $this->_alerts = new Alerts();
+        $this->_dataTime = new DateTime();
+    }
+
+    private function getCurrentDateTime(){
+        $this->_dataTime->setTimezone(new \DateTimeZone('America/Mexico_City'));
+        return $this->_dataTime->format('Y-m-d H:i:s');
+    }
+
+    Public function TableUsersByDepartament($role_id, $departament_id){
+        $table  = '';
+        
+        $users  = $this->_users->GetUsersByDepartament($role_id, $departament_id);
+        foreach ($users as $user) {
+
+            $gener       = UserAttributes::getGenderLabel($user['gener']);
+            $shift       = $user['shift'] == 'MORNING' ? 'Mañana' : 'Tarde';
+            $shift = UserAttributes::getShiftLabel($user['shift']);
+            $statusDetails = UserAttributes::getStatusDetails($user['status']);
+
+            $table .= '
+                <tr>
+                    <td class="text-bold-500">'.$user['name'].'</td>
+                    <td>'.$user['last_name'].'</td>
+                    <td class="text-bold-500">'.$gener.'</td>
+                    <td>'.$shift.'</td>
+                    <td><span class="badge bg-'.$statusDetails['class'].'">'.$statusDetails['label'].'</span></td>
+                    <td>
+                        <div class="btn-group mb-2 btn-group-sm" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-warning" data-id="'.$user['id'].'" id="updateAction" ><i data-feather="edit-2"></i></button>
+                            <button type="button" class="btn btn-danger" data-id="'.$user['id'].'" data-bs-toggle="modal" data-bs-target="#Add-collaborator"><i data-feather="trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            ';
+        }
+        return $table;
+    }
+
+    public function DataTableAllUsers() {
+        $dataTables = '';
+        $dataUsers = $this->_users->AllDataUsers();
+        foreach ($dataUsers as $user) {
+            $rol = UserAttributes::getRolDetails($user['Rol']);
+            $departament = UserAttributes::GetDepartamentDetails($user['Departaments']);
+            $shift = UserAttributes::getShiftLabel($user['shift']);
+            $statusDetails = UserAttributes::getStatusDetails($user['status']);
+            $dataTables .= '
+                <tr>
+                    <td>'.$user['Name'].'</td>
+                    <td>'.$user['Last_names'].'</td>
+                    <td>'.$rol.'</td>
+                    <td>
+                        <span class="badge bg-'.$departament['class'].'">'.$departament['label'].'</span>
+                    </td>
+                    <td>'.$shift.'</td>
+                    <td>
+                        <span class="badge bg-'.$statusDetails['class'].'">'.$statusDetails['label'].'</span>
+                    </td>
+                </tr>
+            ';
+        }
+        return $dataTables;
+
     }
 
     public function AddCollaborator()
@@ -91,53 +156,41 @@ class Administrator
         }
     }
 
-    Public function TableUsersByDepartament($role_id, $departament_id){
-        $table  = '';
-        $users  = $this->_users->GetUsersByDepartament($role_id, $departament_id);
-        foreach ($users as $user) {
-            $gener       = $user['gener'] == 'MAN' ? 'Hombre' : 'Mujer';
-            $shift       = $user['shift'] == 'MORNING' ? 'Mañana' : 'Tarde';
-            $status       = '';
-            $status_class = ''; 
+    public function UpdateCollaborator (){
+        $alert      = ['title' => '', 'body' => "", "type" => '', 'location' => ''];
 
-            switch ($user['status']) {
-                case 'ACTIVE':   $status = "Activo";        $status_class = "success"; break;
-                case 'INACTIVE': $status = "Suspendido";    $status_class = "warning"; break;
-                case 'DELETED':  $status = "Eliminado";     $status_class = "danger";  break;
+        if (isset($_POST['update_user']) && isset($_POST['user_id'])) {
+            $date = $this->getCurrentDateTime();
+            $updateDataProfile = [$_POST['names'], $_POST['last_names'], $_POST['gener'], $_POST['shift'], $date, $_POST['user_id']];
+            $resultProfileUpdate = $this->_user_profile->UpdateUserProfile($updateDataProfile);
+            if ($resultProfileUpdate == true) {
+                $alert['title']     = 'Felicidades';
+                $alert['body']      = "La informacion fue actualizada con exito";
+                $alert['type']      = "success";
+                $alert['location']  = "Kitchen.php";
+            } else {
+                $alert['title'] = 'ERROR';
+                $alert['body']  = "Intente Actualizar los datos más tarde";
+                $alert['type']  = "error";
             }
 
-            $table .= '
-                 <tr>
-                    <td class="text-bold-500">'.$user['name'].'</td>
-                    <td>'.$user['last_name'].'</td>
-                    <td class="text-bold-500">'.$gener.'</td>
-                    <td>'.$shift.'</td>
-                    <td><span class="badge bg-'.$status_class.'">'.$status.'</span></td>
-                    <td>
-                        <div class="btn-group mb-2 btn-group-sm" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-warning" data-id="'.$user['id'].'" data-bs-toggle="modal" data-bs-target="#updateCollaborator"><i data-feather="edit-2"></i></button>
-                            <button type="button" class="btn btn-danger" data-id="'.$user['id'].'" data-bs-toggle="modal" data-bs-target="#Add-collaborator"><i data-feather="trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            ';
+            $this->_alerts->showAlert($alert);
         }
-        return $table;
-    }
-
-    public function UpdateCollaborator (){
-
     }  
 
     public function DeleteCollaborator (){
 
+        $this->_alerts->DeleteAlert();
+
     }
     public function GetUser( $id ) {
         
-        $user = $this->_users->UserProfileById( $id );
+        $user = $this->_user_profile->UserProfileById( $id );
         if ( !empty( $user ) ) {
             return $user[0];
         }
         return null;
     }
+
+    
 }

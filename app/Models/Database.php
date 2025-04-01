@@ -24,7 +24,7 @@ class Database
      */
     public function __construct()
     {
-        $file_env = dirname(__DIR__) . '/Core/settings.env';
+        $file_env = dirname(__DIR__) . '/Core/.env';
         $this->_helper = new Helpers();
         $this->_helper->LoadEnv($file_env);
         $this->dsn = "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_DATABASE'] . ";charset=" . $_ENV['DB_CHARSET'] . ";";

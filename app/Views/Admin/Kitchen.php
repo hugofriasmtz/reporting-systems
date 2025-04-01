@@ -9,7 +9,8 @@ $auth      = new Authentication();
 $admin     = new Administrator();
 $structure = new Structure();
 $user      = $auth->AuthUser();
-$admin-> UpdateCollaborator();
+$admin->AddCollaborator();
+$admin->UpdateCollaborator();
 $admin->DeleteCollaborator();
 
 if (!$auth->IsAuth()) {
@@ -32,7 +33,7 @@ $authn_user   = $_SESSION['user'];
     <link rel="stylesheet" href="../../../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="../../../assets/css/app.css">
     <link rel="shortcut icon" href="../../../assets/images/favicon.svg" type="image/x-icon">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 
 <body>
@@ -88,7 +89,6 @@ $authn_user   = $_SESSION['user'];
                                             </thead>
                                             <tbody>
                                                 <?php echo $admin->TableUsersByDepartament(3, 2); ?>
-                                                <?php include_once '../Modals/update_user_collaborator.php' ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -98,16 +98,20 @@ $authn_user   = $_SESSION['user'];
                     </div>
                     <!-- Hoverable rows end -->
                     <!-- Modal Edit -->
-                    <div class="modal fade text-left" id="updateCollaborator" tabindex="-1" role="dialog" aria-labelledby="updateCollaboratorLabel" aria-hidden="true">
+                    <div class="modal fade text-left" id="updateUser" tabindex="-1" role="dialog" aria-labelledby="updateUserLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-warning">
-                                    <h5 class="modal-title white" id="updateCollaboratorLabel">Actualizar Colaborador</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <h4 class="modal-title white" id="updateUserLabel">Actualizar Colaborador  </h4>
+                                    <button type="button" class="close black" data-bs-dismiss="modal" aria-label="Close">
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <div class="modal-body" id="update_user"></div>
+                                <div class="modal-body" id="update_user">
+                                
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -124,7 +128,7 @@ $authn_user   = $_SESSION['user'];
     <script src="../../../assets/js/main.js"></script>
 
     <script type="text/javascript">
-        $(document).on("click", ".updateCollaborator", function() {
+        $(document).on("click","#updateAction", function() {
             var user_id = $(this).data('id');
             $.ajax({
                 url: '../Modals/update_user_collaborator.php',
@@ -134,10 +138,9 @@ $authn_user   = $_SESSION['user'];
                 },
                 success: function(data) {
                     $("#update_user").html(data);
-                    $('#updateCollaborator').modal('show');
+                    $('#updateUser').modal('show');
                 }
             })
-
         });
 
         $(document).on("click", ".deletedUser", function() {
@@ -153,7 +156,6 @@ $authn_user   = $_SESSION['user'];
                     $('#deletedUser').modal('show');
                 }
             })
-
         });
     </script>
 </body>

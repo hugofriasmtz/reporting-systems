@@ -1,10 +1,7 @@
 <?php
 require_once __DIR__ . '../../../../autoload.php';
 
-use App\Controllers\Authentication;
 use App\Controllers\Administrator;
-
-$controller = new Authentication();
 $controller = new Administrator();
 
 
@@ -12,6 +9,7 @@ if (isset($_POST['user_id'])) {
     $user = $controller->GetUser($_POST['user_id']);
     $genero = '';
     $shift = '';
+    $role = '';
     if ($user["shift"] === 'MORNING') {
         $shift .= '<option value="MORNING" selected> Mañana </option>';
         $shift .= '<option value="AFTERNOON"> Tarde </option>';
@@ -45,10 +43,9 @@ if (isset($_POST['user_id'])) {
     if (!is_null($user)) {
         $payload = '  
        <form method="POST" class="form">
-                    <input type="hidden" name="update_user" value="'.$user['id'].'">
-                    <input type="hidden" name="user_id" value="'.$user['id'].'">
-                    
                     <div class="row">
+                    <input type="hidden" name="update_user" value="'.$user['id'].'">
+                    <input type="hidden" name="user_id" value="'.$user['id'].'">    
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="names">Nombre</label>
@@ -61,27 +58,15 @@ if (isset($_POST['user_id'])) {
                                 <input type="text" id="last_names" class="form-control" name="last_names" value="'.$user['last_names'].'">
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" id="username" class=" form-control" name="username" value="'.$user['username'].'">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="password">Contraseña</label>
-                                <input type="password" id="password" class="form-control" name="password" value="'.$user['password'].'">
-                            </div>
-                        </div>
                         <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="gener">Genero</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="gener" id="inputGroupSelect01">
+                                    <select class="form-select" name="gener" id="UpdateGroupGener">
                                         <option selected>Seleccionar...</option>
                                         '.$genero.'
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Generos</label>
+                                    <label class="input-group-text" for="UpdateGroupGener">Generos</label>
                                 </div>
                             </div>
                         </div>
@@ -89,11 +74,11 @@ if (isset($_POST['user_id'])) {
                             <div class="form-group">
                                 <label for="user_rol">Cargo</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="user_rol" id="inputGroupSelect01">
+                                    <select class="form-select" name="user_rol" id="UpdateGrouprRol">
                                         <option selected>Seleccionar...</option>
                                         '.$role.'
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Cargos</label>
+                                    <label class="input-group-text" for="UpdateGrouprRol">Cargos</label>
                                 </div>
                             </div>
                         </div>
@@ -101,10 +86,11 @@ if (isset($_POST['user_id'])) {
                             <div class="form-group">
                                 <label for="shift">Turno</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="shift" id="inputGroupSelect01">
+                                    <select class="form-select" name="shift" id="UpdateGrouprShift">
+                                        <option selected>Seleccionar...</option>
                                         '.$shift.'
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Turnos</label>
+                                    <label class="input-group-text" for="UpdateGrouprRol">Turnos</label>
                                 </div>
                             </div>
                         </div>

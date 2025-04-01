@@ -40,12 +40,12 @@
                             <div class="form-group">
                                 <label for="gener">Genero</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="gener" id="inputGroupSelect01">
+                                    <select class="form-select" name="gener" id="Groupgener">
                                         <option selected>Seleccionar...</option>
                                         <option value="Man">Hombre</option>
                                         <option value="WOMAN">Mujer</option>
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Generos</label>
+                                    <label class="input-group-text" for="Groupgener">Generos</label>
                                 </div>
                             </div>
                         </div>
@@ -53,12 +53,12 @@
                             <div class="form-group">
                                 <label for="user_rol">Cargo</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="user_rol" id="inputGroupSelect01">
+                                    <select class="form-select" name="user_rol" id="Groupuser_rol">
                                         <option selected>Seleccionar...</option>
                                         <option value="2">Encargado</option>
                                         <option value="3">Colaborador</option>
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Cargos</label>
+                                    <label class="input-group-text" for="Groupuser_id">Cargos</label>
                                 </div>
                             </div>
                         </div>
@@ -66,13 +66,13 @@
                             <div class="form-group">
                                 <label for="shift">Turno</label>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" name="shift" id="inputGroupSelect01">
+                                    <select class="form-select" name="shift" id="Groupshift">
                                         <option selected>Seleccionar...</option>
                                         <option value="MORNING">Mañana</option>
                                         <option value="AFTERNOON">Tarde</option>
                                         <option value="NIGHT">Noche</option>
                                     </select>
-                                    <label class="input-group-text" for="inputGroupSelect01">Turnos</label>
+                                    <label class="input-group-text" for="Groupshift">Turnos</label>
                                 </div>
                             </div>
                         </div>
