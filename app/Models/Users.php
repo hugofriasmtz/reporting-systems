@@ -37,12 +37,5 @@ class Users extends Database
         WHERE status = ?', [ $status ] );
     }
     
-// SELECT users.id, 
-//        departaments.names AS department_name, 
-//        CONCAT_WS(" ", user_profiles.names, user_profiles.last_names) AS full_name
-// FROM users
-// INNER JOIN user_profiles ON users.id = user_profiles.user_id
-// INNER JOIN departaments ON users.departament_id = departaments.id
-// WHERE departaments.names = 'KITCHEN' AND users.status = "ACTIVE";
 }
 ?>

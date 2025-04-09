@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <form method="POST" class="form">
-                    <input type="hidden" name="user_departament" value="2">
+                    <input type="hidden" id="user_departament" name="user_departament" value="">
                     <div class="row">
                         <div class="col-md-6 col-12">
                             <div class="form-group">
