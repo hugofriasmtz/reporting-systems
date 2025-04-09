@@ -5,7 +5,12 @@ namespace App\Helpers;
 
 class UserAttributes
 {
-    public static function getStatusDetails($status)
+    public function GetCurrentDateTime(){
+        $date = new \DateTimeZone('America/Mexico_City');
+        return $date = format('Y-m-d H:i:s');
+    }
+
+    public static function GetStatusDetails($status)
     {
         switch ($status) {
             case 'ACTIVE':   return ['label' => 'Activo', 'class' => 'success']; 

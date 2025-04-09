@@ -43,7 +43,7 @@ $authn_user   = $_SESSION['user'];
                 <div class="sidebar-header">
                     <img src="../../../assets/images/logo.svg" alt="" srcset="">
                 </div>
-                <?php echo $structure->Navbar('Cocina'); ?>
+                <?php echo $structure->Navbar('Recepción'); ?>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
         </div>
@@ -56,19 +56,19 @@ $authn_user   = $_SESSION['user'];
                 <div class="page-title">
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Colaboradores de Cocina. 🧑‍🍳</h3>
-                            <p class="text-subtitle text-muted">¿Quienes integran la cocina?</p>
+                            <h3>Colaboradores de Recepción. 📝</h3>
+                            <p class="text-subtitle text-muted">¿Quiénes integran el equipo de Recepción?</p>
                         </div>
-                        <?php echo $structure->PagesTitle('Cocina'); ?>
+                        <?php echo $structure->PagesTitle('Recepción'); ?>
                     </div>
                     <!-- Hoverable rows start -->
                     <div class="row" id="table-hover-row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Lista de Colaboradores de Cocina </h4>
+                                    <h4 class="card-title">Lista de Colaboradores de Recepción </h4>
                                     <div class="form-actions d-flex justify-content-end">
-                                        <button type="button" class="btn icon icon-left btn-success open-modal" data-department="2" data-bs-toggle="modal" data-bs-target="#Add-collaborator">
+                                        <button type="button" class="btn icon icon-left btn-success open-modal" data-department="7" data-bs-toggle="modal" data-bs-target="#Add-collaborator">
                                             <i data-feather="user-plus"></i> Agregar
                                         </button>
                                         <?php include_once '../Modals/add_user_collaborator.php' ?>
@@ -90,7 +90,7 @@ $authn_user   = $_SESSION['user'];
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php echo $admin->TableUsersByDepartament(3, 2); ?>
+                                                <?php echo $admin->TableUsersByDepartament(3, 7); ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -130,7 +130,7 @@ $authn_user   = $_SESSION['user'];
     <script src="../../../assets/js/main.js"></script>
 
     <script type="text/javascript">
-        // Actualizar dinámicamente el valor del departamento en el modal
+        // Actualizar dinámicamente el valor del departamento en el modal para Recepción
         $(document).on("click", ".open-modal", function() {
             var department = $(this).data("department"); // Obtener el valor del departamento del botón
             $("#user_departament").val(department); // Actualizar el valor del campo oculto en el modal
