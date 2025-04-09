@@ -81,6 +81,12 @@ class Structure
         case 'Sistemas': $sub_page = 'Sistemas'; break;
         case 'Mantenimiento': $sub_page = 'Mantenimiento'; break;
         case 'RR.HH': $sub_page = 'RR.HH'; break;
+        case 'Recepción': $sub_page = 'Recepción'; break;
+        case 'Ventas': $sub_page = 'Ventas'; break;
+        case 'Compras': $sub_page = 'Compras'; break;
+        case 'Ama de llaves': $sub_page = 'Ama de llaves'; break;
+        case 'Áreas Públicas': $sub_page = 'Áreas Públicas'; break;
+        
       }
       
       return  '
@@ -104,24 +110,41 @@ class Structure
 
               <ul class="submenu '. ($active_page == $sub_page ? 'active' : '') .'">
                 <li>
-                  <a href="Kitchen.php">Cocina
-                  <i data-feather="sliders" width="20"></i></a>
-                </li>
-
-                <li>
                   <a href="Systems.php">Sistemas
                   <i data-feather="wifi" width="20"></i></a>
                   
                 </li>
-
+                <li>
+                  <a href="Kitchen.php">Cocina
+                  <i data-feather="coffee" width="20"></i></a>
+                </li>
+                <li>
+                  <a href="Housekeeping.php">Ama de llaves
+                  <i data-feather="home" width="20"></i></a>
+                </li>
+                <li>
+                  <a href="PublicAreas.php">Áreas Públicas
+                  <i data-feather="globe" width="20"></i></a>
+                </li>
+                <li>
+                  <a href="Purchasing.php">Compras
+                  <i data-feather="shopping-cart" width="20"></i></a>
+                </li>
+                <li>
+                  <a href="Reception.php">Recepción
+                  <i data-feather="phone" width="20"></i></a>
+                </li>
+                <li>
+                  <a href="Sales.php">Ventas
+                  <i data-feather="bar-chart" width="20"></i></a>
+                </li>
                 <li>
                   <a href="Maintenance.php">Mantenimiento
                   <i data-feather="tool" width="20"></i></a>
-                  
                 </li>
 
                 <li>
-                  <a href="HR.php">R.H
+                  <a href="RRHH.php">R.H
                   <i data-feather="user-check" width="20"></i></a>
                 </li>
               </ul>
